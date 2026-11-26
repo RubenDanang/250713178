@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="id" lang="id">
+<head>
+    <title>Katalog & Keranjang Belanja</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            type="text/javascript"></script>
+
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .produk {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .produk button {
+            background: green;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .produk button:hover {
+            background: darkgreen;
+        }
+
+        #keranjang {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #total {
+            font-weight: bold;
+            color: blue;
+            margin-top: 10px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            let keranjang = [];
+
+            $(".btnTambah").click(function () {
+
+                const produk = $(this).closest(".produk");
+                const nama = produk.find(".nama").text();
+                const harga = parseInt(produk.find(".harga").val());
+
+                const item = keranjang.find(
+                    p => p.nama === nama
+                );
+
+                if (item) {
+                    item.jumlah++;
+                } else {
+                    keranjang.push({
+                        nama: nama,
+                        harga: harga,
+                        jumlah: 1
+                    });
+                }
+
+                tampilkanKeranjang();
+            });
+
+            function tampilkanKeranjang() {
+
+                $("#daftarKeranjang").empty();
+
+                let total = 0;
+
+                $.each(keranjang, function (i, item) {
+
+                    let subtotal =
+                        item.harga * item.jumlah;
+
+                    total += subtotal;
+
+                    $("#daftarKeranjang").append(
+                        "<li>" +
+                        item.nama +
+                        " | Rp " +
+                        item.harga.toLocaleString("id-ID") +
+                        " x " +
+                        item.jumlah +
+                        " = Rp " +
+                        subtotal.toLocaleString("id-ID") +
+                        "</li>"
+                    );
+
+                });
+
+                $("#total").text(
+                    "Total Belanja : Rp " +
+                    total.toLocaleString("id-ID")
+                );
+            }
+
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <h1>Katalog Produk</h1>
+
+    <div class="container">
+
+        <div class="produk">
+            <h3 class="nama">Headphone</h3>
+            <p>Harga: Rp150.000</p>
+
+            <input type="hidden"
+                   class="harga"
+                   value="150000" />
+
+            <button class="btnTambah">
+                Tambah ke Keranjang
+            </button>
+        </div>
+
+        <div class="produk">
+            <h3 class="nama">Keyboard</h3>
+            <p>Harga: Rp200.000</p>
+
+            <input type="hidden"
+                   class="harga"
+                   value="200000" />
+
+            <button class="btnTambah">
+                Tambah ke Keranjang
+            </button>
+        </div>
+
+        <div class="produk">
+            <h3 class="nama">Mouse Wireless</h3>
+            <p>Harga: Rp100.000</p>
+
+            <input type="hidden"
+                   class="harga"
+                   value="100000" />
+
+            <button class="btnTambah">
+                Tambah ke Keranjang
+            </button>
+        </div>
+
+    </div>
+
+    <div id="keranjang">
+        <h2>Keranjang Belanja</h2>
+
+        <ul id="daftarKeranjang">
+        </ul>
+
+        <p id="total">
+            Total Belanja : Rp 0
+        </p>
+    </div>
+
+</body>
+</html>
